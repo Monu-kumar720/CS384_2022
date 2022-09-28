@@ -203,6 +203,66 @@ for i in range(y,y+9):
 ## giving space by increasing the row          
 y=y+9
 
+a=0 ##initlizing the value a with 0
+## iterating  in the range till size
+while a<size:
+    y=y+4
+    ## adding values to some cells
+    cell_to_write=ws.cell(row=y,column=13)
+    cell_to_write.value='Mod Transition Count'
+    y=y+1
+    cell_to_write=ws.cell(row=y,column=13)
+    ## in case when a+Mod >size
+    if a+Mod<size:
+        cell_to_write.value=str(a)+"-"+str(a+Mod-1)
+    ## when a+Mod<size
+    else:
+        cell_to_write.value=str(a)+"-"+str(size)
+    cell_to_write=ws.cell(row=y,column=14)
+    cell_to_write.value='To'
+    cell_to_write=ws.cell(row=y+2,column=12)
+    cell_to_write.value='From'
+    y=y+1
+    ##adding values in a arr[9][9]
+    rows, cols = (9,9)
+    arr = [[0 for i in range(cols)] for j in range(rows)]
+    
+        
+    if a+Mod>size:
+        for iteam in range(a,size-1):
+            arr[dic[Octant[iteam]]][dic[Octant[iteam+1]]]+=1
+        id=[1,-1,2,-2,3,-3,4,-4]
+        arr[0][0]="count"
+        for i in range(1,9):
+            arr[0][i]=id[i-1]
+            arr[i][0]=id[i-1]
+
+
+        for i in range(y,y+9):
+            for j in range (13,22):
+                cell_to_write=ws.cell(row=i,column=j)
+                ws.cell(row=i, column=j).border = thin_border
+                cell_to_write.value=arr[i-y][j-13]
+        y=y+9
+        break ##coming out of loop
+       
+    else:
+        for iteam in range(a,a+Mod):
+            arr[dic[Octant[iteam]]][dic[Octant[iteam+1]]]+=1
+        id=[1,-1,2,-2,3,-3,4,-4]
+        arr[0][0]="count"
+        for i in range(1,9):
+            arr[0][i]=id[i-1]
+            arr[i][0]=id[i-1]
+
+
+        for i in range(y,y+9):
+            for j in range (13,22):
+                cell_to_write=ws.cell(row=i,column=j)
+                ws.cell(row=i, column=j).border = thin_border
+                cell_to_write.value=arr[i-y][j-13]
+        y=y+9
+        a=a+Mod  ##updating the value of a 
         
  ##--> saving the workbook in the output file   
 wb.save('output_octant_transition_identify.xlsx')
